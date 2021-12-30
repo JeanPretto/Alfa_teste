@@ -1,0 +1,186 @@
+CREATE DATABASE "Alfa"
+  WITH OWNER = postgres
+       ENCODING = 'LATIN1'
+       TABLESPACE = pg_default
+       LC_COLLATE = 'C'
+       LC_CTYPE = 'C'
+       CONNECTION LIMIT = -1;
+
+--DROP TABLE cadastro_filiais;
+create table cadastro_filiais
+(
+codigo serial, -- Codigo
+cnpj character varying(18), -- CNPJ
+nome character varying(100),
+cidade character varying(100),
+estado character varying(100),
+
+PRIMARY KEY (codigo)
+)
+
+insert into cadastro_filiais ( cnpj, nome, cidade, estado) values 
+('82.110.818/0001-21','ALFA TRANSPORTES EIRELI','Caçador','SC'),
+('82.110.818/0002-02','ALFA TRANSPORTES EIRELI','Curitiba','PR'),
+('82.110.818/0001-21','ALFA TRANSPORTES EIRELI','Curitiba','PR'),
+('82.110.818/0003-93','ALFA TRANSPORTES EIRELI','Guarulhos','SP'),
+('82.110.818/0016-08','ALFA TRANSPORTES EIRELI','Betim','MG'),
+('82.110.818/0008-06','ALFA TRANSPORTES EIRELI','Cachoeirinha','RS'),
+('82.110.818/0027-60','ALFA TRANSPORTES EIRELI','Tres Lagoas','MS'),
+('82.110.818/0020-94','ALFA TRANSPORTES EIRELI','Goiania','GO'),
+('82.110.818/0025-07','ALFA TRANSPORTES EIRELI','Serra','ES'),
+('82.110.818/0028-41','ALFA TRANSPORTES EIRELI','Rio de Janeiro','RJ')
+
+
+
+--DROP TABLE departamentos;
+create table departamentos
+(
+dcodigo serial,
+dnome character varying(100),
+dcodigo_filial integer,
+--codigo int NOT NULL,
+
+PRIMARY KEY (dcodigo),
+
+FOREIGN KEY (dcodigo_filial) REFERENCES cadastro_filiais (codigo)
+
+)
+
+
+
+insert into departamentos 
+(dnome, dcodigo_filial) 
+values 
+('Expedição', 1),
+('Expedição', 2),
+('Expedição', 3),
+('Expedição', 4),
+('Expedição', 5),
+('Expedição', 6),
+('Expedição', 7),
+('Expedição', 8),
+('Expedição', 9),
+
+('SAC', 1),
+('SAC', 2),
+('SAC', 3),
+('SAC', 4),
+('SAC', 5),
+('SAC', 6),
+('SAC', 7),
+('SAC', 8),
+('SAC', 9),
+
+('Operacional', 1),
+('Operacional', 2),
+('Operacional', 3),
+('Operacional', 4),
+('Operacional', 5),
+('Operacional', 6),
+('Operacional', 7),
+('Operacional', 8),
+('Operacional', 9),
+
+('Administrativo', 1),
+('Administrativo', 2),
+('Administrativo', 3),
+('Administrativo', 4),
+('Administrativo', 5),
+('Administrativo', 6),
+('Administrativo', 7),
+('Administrativo', 8),
+('Administrativo', 9),
+
+('Gerência', 1),
+('Gerência', 2),
+('Gerência', 3),
+('Gerência', 4),
+('Gerência', 5),
+('Gerência', 6),
+('Gerência', 7),
+('Gerência', 8),
+('Gerência', 9)
+
+
+--drop table colaboradores
+create table colaboradores
+(
+CPF character varying(16),
+cnome character varying(100),
+genero character varying(1),
+data_admissao date,
+salario numeric(15,2) DEFAULT 0,
+codigo_dep integer not null,
+ccodigo_filial integer not null,
+
+PRIMARY KEY (CPF),
+
+FOREIGN KEY (ccodigo_filial) REFERENCES cadastro_filiais (codigo)
+
+)
+
+
+
+
+insert into colaboradores (CPF, cnome, genero, data_admissao, salario, codigo_dep, ccodigo_filial) values
+(05281341081, 'Kauê Luan Brito', 'M', '2012-03-21', 2297.84, 14, 1),
+(32784071804, 'Noah Elias César Costa', 'M','2019-12-01', 1428.33 , 11, 1),
+(49474822573, 'Lara Letícia Maya Jesus', 'F','2000-10-07', 5845.93 , 12 , 1),
+
+(42169687670,'Marcos Augusto Cavalcanti','M','2019-02-27', 1900.00, 9, 2),
+(28112642214,'Vicente Otávio Araújo','M','2018-05-21', 2525.13, 7, 2),
+(15939278787,'Nicolas Guilherme Oliver Cardoso','M','2017-03-17', 3100.78, 5, 2),
+
+(20897364538,'Catarina Luzia Amanda Pinto','F','2016-12-05', 3380.97, 7, 3),
+(74582060129,'Mateus Emanuel Novaes','M','2020-07-09', 4159.91, 6, 3),
+(33868627138,'Kamilly Luciana Emilly Martins','F','2021-05-01', 1329.30, 5,3),
+
+(41390507130,'Nina Camila Carolina da Conceição','F','2021-03-15', 2200.00, 11,4),
+(74469409480,'Alice Débora Yasmin Fernandes','F','2018-12-27', 2584.66, 11, 4),
+(27520858260,'Giovana Jennifer Liz Drumond','F','2017-01-17', 2890.80, 11, 4),
+
+(87480226403,'Thomas Davi Melo','M','2021-09-28', 1390.05, 13, 5),
+(88080296898,'Olivia Lúcia Pereira','F','2021-05-21',1700.00 , 14, 5),
+(86579570199,'Enrico Miguel Carlos Bernardes','M','2011-11-11', 4500.00, 7, 5),
+
+(36450564598,'Vanessa Isadora Cardoso','F','2015-05-20', 3770.70, 6, 6),
+(35519671486,'Diego Cláudio da Luz','M','2016-06-16', 2505.00, 7, 6),
+(94108122089,'Antonella Bárbara Assunção','F','2019-12-11', 2100.00, 5, 6),
+
+(98265660804,'Mariana Rayssa Raimunda Jesus','F','2012-12-01', 6400.00, 9, 7),
+(24437434706,'Kauê Heitor Novaes','M','2021-04-14', 1327.90, 13, 7),
+(01547796600,'Leonardo Thiago Daniel Nunes','M','2021-04-14', 1327.90, 13, 7),
+
+(27147479653,'Clarice Alícia Drumond','F','2018-08-27', 1990.00, 14, 8),
+(56266109522,'Fernando Leonardo Mário Oliveira','M','2016-05-17', 2297.84, 14, 8),
+(94966232201,'Laís Emanuelly Moreira','F','2019-08-02', 2753.33, 11 , 8),
+
+(23345374706,'Marcos Vinicius Bento Renato da Cunha','M','2009-07-01', 7855.71, 15, 9),
+(35532291365,'Carlos Eduardo Renan José Moraes','M','2010-04-14', 6300.00, 16, 9),
+(12214404031,'Ricardo Martin Hugo Vieira','M','2021-04-21', 3100.60, 35, 9)
+
+
+select a.cpf, a.cnome, a.codigo_dep, a.ccodigo_filial, c.dnome, c.dcodigo, b.cidade 
+from colaboradores a
+left join departamentos c on c.dcodigo = a.codigo_dep
+left join cadastro_filiais b on b.codigo = a.ccodigo_filial
+order by ccodigo_filial, cnome
+
+
+select a.cpf, a.cnome, a.data_admissao, b.cidade 
+from colaboradores a
+inner join cadastro_filiais b on b.codigo = a.ccodigo_filial
+order by data_admissao asc limit 5
+
+
+select a.ccodigo_filial,  b.cidade , count(*)as Quantidade
+from colaboradores a
+left join cadastro_filiais b on b.codigo = a.ccodigo_filial
+group by a.ccodigo_filial,  b.cidade
+
+
+select a.dcodigo, a.dnome, avg(b.salario)
+from departamentos a 
+inner join colaboradores b on b.codigo_dep = a.dcodigo
+group by a.dnome, a.dcodigo,  b.codigo_dep
+
